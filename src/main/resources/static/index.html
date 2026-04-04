@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clothes Shop</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main class="page-shell">
+        <section class="hero-panel">
+            <h1>O'Riordan's Clothes Store</h1>
+            <p class="hero-copy">
+                Choose an option below to register, log in as a customer, or log in as an admin.
+            </p>
+
+            <div class="action-grid">
+                <button class="action-card" data-view="register">
+                    Register
+                </button>
+                <button class="action-card" data-view="customer-login">
+                    Customer Login
+                </button>
+                <button class="action-card" data-view="admin-login">
+                    Admin Login
+                </button>
+            </div>
+        </section>
+
+        <section class="form-panel">
+            <div class="panel-header">
+                <h2 id="panel-title">Choose an option</h2>
+                <p id="panel-subtitle">The selected form will appear here.</p>
+            </div>
+
+            <form id="register-form" class="auth-form hidden">
+                <label for="register-username">Username</label>
+                <input id="register-username" type="text" required>
+
+                <label for="register-email">Email</label>
+                <input id="register-email" type="email" required>
+
+                <label for="register-password">Password</label>
+                <input id="register-password" type="password" required>
+
+                <button type="submit" class="submit-button">Register Customer</button>
+            </form>
+
+            <form id="customer-login-form" class="auth-form hidden">
+                <label for="customer-login-username">Username</label>
+                <input id="customer-login-username" type="text" required>
+
+                <label for="customer-login-password">Password</label>
+                <input id="customer-login-password" type="password" required>
+
+                <button type="submit" class="submit-button">Login as Customer</button>
+            </form>
+
+            <form id="admin-login-form" class="auth-form hidden">
+                <label for="admin-login-username">Username</label>
+                <input id="admin-login-username" type="text" required>
+
+                <label for="admin-login-password">Password</label>
+                <input id="admin-login-password" type="password" required>
+
+                <button type="submit" class="submit-button">Login as Admin</button>
+            </form>
+
+            <div id="message-box" class="message-box hidden"></div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

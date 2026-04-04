@@ -1,0 +1,137 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f4f4;
+    color: #222;
+    min-height: 100vh;
+}
+
+.page-shell {
+    width: min(1000px, calc(100% - 40px));
+    margin: 40px auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.hero-panel,
+.form-panel {
+    background: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+    padding: 24px;
+    box-shadow: none;
+}
+
+h1,
+h2 {
+    margin-top: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+    font-size: 2.2rem;
+    margin-bottom: 14px;
+}
+
+.hero-copy,
+#panel-subtitle {
+    color: #444;
+    line-height: 1.5;
+}
+
+.action-grid {
+    display: grid;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.action-card {
+    width: 100%;
+    text-align: center;
+    border: 0;
+    border-radius: 4px;
+    padding: 14px;
+    background: #2f7d32;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.action-card:hover {
+    background: #266729;
+}
+
+.panel-header {
+    margin-bottom: 20px;
+}
+
+.auth-form {
+    display: grid;
+    gap: 10px;
+}
+
+.auth-form label {
+    font-weight: 700;
+    font-size: 0.94rem;
+}
+
+.auth-form input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 4px;
+    border: 1px solid #bbbbbb;
+    background: #fff;
+    font-size: 1rem;
+}
+
+.submit-button {
+    margin-top: 8px;
+    padding: 12px 14px;
+    border: 0;
+    border-radius: 4px;
+    background: #2f7d32;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    background: #266729;
+}
+
+.message-box {
+    margin-top: 20px;
+    padding: 12px 14px;
+    border-radius: 4px;
+    background: #eef7ee;
+    color: #1f4f22;
+    border: 1px solid #b9d8bb;
+    line-height: 1.5;
+}
+
+.message-box.error {
+    background: #fff1f1;
+    color: #9b1c1c;
+    border-color: #efc2c2;
+}
+
+.hidden {
+    display: none;
+}
+
+@media (max-width: 860px) {
+    .page-shell {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-panel,
+    .form-panel {
+        padding: 20px;
+    }
+}
