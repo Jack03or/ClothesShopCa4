@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Products</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main class="adminPageShell">
+        <section class="hero-panel fullWidthPanel">
+            <div class="topBarRow">
+                <div>
+                    <h1>Product Catalogue</h1>
+                    <p class="hero-copy">
+                        Browse the current clothes items available in the store.
+                    </p>
+                </div>
+
+                <div class="topButtonRow">
+                    <button class="action-card" type="button" id="customer-logout-button">Log Out</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <section class="list-panel">
+        <div class="list-header">
+            <h2>All Products</h2>
+        </div>
+        <div id="customer-product-list" class="customerProductGrid"></div>
+    </section>
+
+    <script src="CustomerProducts.js"></script>
+</body>
+</html>
