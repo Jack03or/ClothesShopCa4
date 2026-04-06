@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Products</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main class="adminPageShell">
+        <section class="hero-panel fullWidthPanel">
+            <div class="topBarRow">
+                <div>
+                    <h1>Admin Product Management</h1>
+                    <p class="hero-copy">
+                        Add clothes items, enter an image name, and set stock quantities for each size.
+                    </p>
+                </div>
+
+                <div class="topButtonRow">
+                    <button class="action-card" type="button" id="load-products-button">Load Products</button>
+                    <button class="action-card" type="button" id="back-button">Back To Home</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="form-panel">
+            <div class="panel-header">
+                <h2>Add Product</h2>
+                <p id="panel-subtitle">Enter the product details and stock for sizes XS to XL.</p>
+            </div>
+
+            <form id="product-form" class="auth-form">
+                <div class="formGrid">
+                    <div class="formField">
+                        <label for="product-title">Title</label>
+                        <input id="product-title" type="text" required>
+                    </div>
+
+                    <div class="formField">
+                        <label for="product-manufacturer">Manufacturer</label>
+                        <input id="product-manufacturer" type="text" required>
+                    </div>
+
+                    <div class="formField">
+                        <label for="product-price">Price</label>
+                        <input id="product-price" type="number" min="0.01" step="0.01" required>
+                    </div>
+
+                    <div class="formField">
+                        <label for="product-category">Category</label>
+                        <select id="product-category" required>
+                            <option value="T-Shirts">T-Shirts</option>
+                            <option value="Hoodies">Hoodies</option>
+                            <option value="Jeans">Jeans</option>
+                            <option value="Jackets">Jackets</option>
+                            <option value="Tracksuits">Tracksuits</option>
+                            <option value="Dresses">Dresses</option>
+                            <option value="Trousers">Trousers</option>
+                            <option value="Shorts">Shorts</option>
+                        </select>
+                    </div>
+
+                    <div class="formField fullWidthField">
+                        <label for="product-image">Image Name</label>
+                        <input id="product-image" type="text" required>
+                    </div>
+                </div>
+
+                <h2 class="section-title">Stock By Size</h2>
+
+                <div class="stockGrid">
+                    <div class="formField">
+                        <label for="stock-xs">XS</label>
+                        <input id="stock-xs" type="number" min="0" value="0" required>
+                    </div>
+
+                    <div class="formField">
+                        <label for="stock-s">S</label>
+                        <input id="stock-s" type="number" min="0" value="0" required>
+                    </div>
+
+                    <div class="formField">
+                        <label for="stock-m">M</label>
+                        <input id="stock-m" type="number" min="0" value="0" required>
+                    </div>
+
+                    <div class="formField">
+                        <label for="stock-l">L</label>
+                        <input id="stock-l" type="number" min="0" value="0" required>
+                    </div>
+
+                    <div class="formField">
+                        <label for="stock-xl">XL</label>
+                        <input id="stock-xl" type="number" min="0" value="0" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-button addProductButton">Add Product</button>
+            </form>
+
+            <div id="product-message-box" class="message-box hidden"></div>
+        </section>
+    </main>
+
+    <section class="list-panel">
+        <div class="list-header">
+            <h2>Current Products</h2>
+        </div>
+        <div class="productListHeader">
+            <span>Title</span>
+            <span>Manufacturer</span>
+            <span>Category</span>
+            <span>Price</span>
+            <span>Image</span>
+            <span>Stock</span>
+        </div>
+        <div id="product-list" class="product-list"></div>
+    </section>
+
+    <script src="AdminProducts.js"></script>
+</body>
+</html>

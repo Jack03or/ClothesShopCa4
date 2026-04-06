@@ -103,4 +103,8 @@ forms["admin-login"].addEventListener("submit", async (event) => {
 
     const result = await sendRequest("/users/login", bodyData);
     showMessage(result, !result.toLowerCase().includes("login successful"));
+
+    if (result.toLowerCase().includes("login successful")) {
+        window.location.href = "/AdminProducts.html";
+    }
 });
