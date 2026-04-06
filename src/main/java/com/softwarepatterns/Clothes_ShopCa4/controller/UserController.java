@@ -24,6 +24,18 @@ public class UserController {
     @PostMapping("/register")
     public String registerUser(@RequestBody User user) {
 
+        if (user.getUsername() == null || user.getUsername().isBlank()) {
+            return "Username is required.";
+        }
+
+        if (user.getEmail() == null || user.getEmail().isBlank()) {
+            return "Email is required.";
+        }
+
+        if (user.getPassword() == null || user.getPassword().isBlank()) {
+            return "Password is required.";
+        }
+
         if (userService.usernameExists(user.getUsername())) {
             return "Username already taken.";
         }
@@ -48,6 +60,11 @@ public class UserController {
 
     @PostMapping("/login")
     public String loginUser(@RequestBody User loginUser) {
+        if (loginUser.getUsername() == null || loginUser.getUsername().isBlank()
+                || loginUser.getPassword() == null || loginUser.getPassword().isBlank()) {
+            return "Username and password are required.";
+        }
+
         User user = userService.findByUsername(loginUser.getUsername());
 
         if (user == null || !user.getPassword().equals(loginUser.getPassword())) {
