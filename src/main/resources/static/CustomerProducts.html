@@ -22,14 +22,78 @@
                 </div>
             </div>
         </section>
-    </main>
 
-    <section class="list-panel">
-        <div class="list-header">
-            <h2>All Products</h2>
-        </div>
-        <div id="customer-product-list" class="customerProductGrid"></div>
-    </section>
+        <section class="catalogueLayout">
+            <aside class="catalogueSidebar">
+                <div class="filterSection">
+                    <h2>Search Title</h2>
+                    <input id="search-title" type="text" placeholder="Search by title">
+                </div>
+
+                <div class="filterSection">
+                    <h2>Search Manufacturer</h2>
+                    <input id="search-manufacturer" type="text" placeholder="Search by manufacturer">
+                </div>
+
+                <div class="filterSection">
+                    <h2>Category</h2>
+                    <select id="filter-category">
+                        <option value="">All Categories</option>
+                        <option value="T-Shirts">T-Shirts</option>
+                        <option value="Hoodies">Hoodies</option>
+                        <option value="Jeans">Jeans</option>
+                        <option value="Jackets">Jackets</option>
+                        <option value="Tracksuits">Tracksuits</option>
+                        <option value="Dresses">Dresses</option>
+                        <option value="Trousers">Trousers</option>
+                        <option value="Shorts">Shorts</option>
+                    </select>
+                </div>
+
+                <div class="filterSection">
+                    <h2>Size</h2>
+                    <select id="filter-size">
+                        <option value="">All Sizes</option>
+                        <option value="XS">XS</option>
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                    </select>
+                </div>
+
+                <div class="filterSection">
+                    <h2>Sort By</h2>
+                    <select id="sort-by">
+                        <option value="">Default</option>
+                        <option value="title">Title</option>
+                        <option value="manufacturer">Manufacturer</option>
+                        <option value="price">Price</option>
+                    </select>
+                </div>
+
+                <div class="filterSection">
+                    <h2>Order</h2>
+                    <select id="sort-direction">
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+                </div>
+
+                <button class="submit-button catalogueButton fullWidthButton" type="button" id="apply-filters-button">Search</button>
+                <button class="action-card clearButton fullWidthButton" type="button" id="clear-filters-button">Clear</button>
+            </aside>
+
+            <section class="catalogueContent">
+                <div class="list-panel cataloguePanel">
+                    <div class="list-header">
+                        <h2>All Products</h2>
+                    </div>
+                    <div id="customer-product-list" class="customerProductGrid"></div>
+                </div>
+            </section>
+        </section>
+    </main>
 
     <script src="CustomerProducts.js"></script>
 </body>
