@@ -1,7 +1,6 @@
 package com.softwarepatterns.Clothes_ShopCa4.service;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,6 +16,8 @@ import com.softwarepatterns.Clothes_ShopCa4.criteria.TitleCriteria;
 import com.softwarepatterns.Clothes_ShopCa4.model.Product;
 import com.softwarepatterns.Clothes_ShopCa4.model.ProductVariant;
 import com.softwarepatterns.Clothes_ShopCa4.repository.ProductRepository;
+import com.softwarepatterns.Clothes_ShopCa4.strategy.ProductSortStrategy;
+import com.softwarepatterns.Clothes_ShopCa4.strategy.SortStrategyFactory;
 
 @Service
 public class ProductService {
@@ -24,9 +25,11 @@ public class ProductService {
     private static final Set<String> VALID_SIZES = createValidSizes();
 
     private ProductRepository productRepository;
+    private SortStrategyFactory sortStrategyFactory;
 
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
+        this.sortStrategyFactory = new SortStrategyFactory();
     }
 
     public Product saveProduct(Product product) {
@@ -115,29 +118,11 @@ public class ProductService {
     }
 
     private void sortProducts(List<Product> products, String sortBy, String sortDirection) {
-        if (sortBy == null || sortBy.isBlank()) {
-            return;
+        ProductSortStrategy sortStrategy = sortStrategyFactory.getSortStrategy(sortBy);
+
+        if (sortStrategy != null) {
+            sortStrategy.sort(products, sortDirection);
         }
-
-        Comparator<Product> comparator = null;
-
-        if (sortBy.equalsIgnoreCase("title")) {
-            comparator = Comparator.comparing(Product::getTitle, String.CASE_INSENSITIVE_ORDER);
-        } else if (sortBy.equalsIgnoreCase("manufacturer")) {
-            comparator = Comparator.comparing(Product::getManufacturer, String.CASE_INSENSITIVE_ORDER);
-        } else if (sortBy.equalsIgnoreCase("price")) {
-            comparator = Comparator.comparing(Product::getPrice);
-        }
-
-        if (comparator == null) {
-            return;
-        }
-
-        if (sortDirection != null && sortDirection.equalsIgnoreCase("desc")) {
-            comparator = comparator.reversed();
-        }
-
-        products.sort(comparator);
     }
 
     private static Set<String> createValidSizes() {
