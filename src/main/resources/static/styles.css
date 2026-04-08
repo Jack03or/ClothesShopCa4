@@ -272,6 +272,27 @@ h1 {
     margin: 6px 0;
 }
 
+.sizeLabel {
+    display: block;
+    margin-top: 12px;
+    margin-bottom: 6px;
+    font-weight: 700;
+}
+
+.productSizeSelect {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 4px;
+    border: 1px solid #bbbbbb;
+    background: #fff;
+    font-size: 1rem;
+    margin-bottom: 12px;
+}
+
+.addCartButton {
+    width: 100%;
+}
+
 .catalogueSidebar input,
 .catalogueSidebar select {
     width: 100%;
@@ -324,6 +345,100 @@ h1 {
     margin: 0;
 }
 
+.cartLayout {
+    width: min(1200px, calc(100% - 40px));
+    margin: 0 auto 40px;
+    display: grid;
+    grid-template-columns: 1.5fr 0.8fr;
+    gap: 20px;
+}
+
+.cartItemsPanel {
+    display: grid;
+    gap: 16px;
+}
+
+.cartItemCard,
+.cartSummaryPanel {
+    background: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+    padding: 20px;
+}
+
+.cartItemCard {
+    display: grid;
+    grid-template-columns: 140px 1fr auto;
+    gap: 18px;
+    align-items: center;
+}
+
+.cartItemImage {
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eaf4ea;
+    color: #2f7d32;
+    font-weight: 700;
+    text-align: center;
+    padding: 12px;
+}
+
+.cartItemDetails h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.cartItemDetails p {
+    margin: 6px 0;
+}
+
+.cartControlRow {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+.cartQtyInput {
+    width: 80px;
+    padding: 8px 10px;
+    border-radius: 4px;
+    border: 1px solid #bbbbbb;
+}
+
+.smallCartButton {
+    width: auto;
+    min-width: 100px;
+    margin-top: 0;
+}
+
+.cartItemTotal {
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.summaryRow,
+.summaryTotalRow {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.summaryTotalRow {
+    font-size: 1.3rem;
+    font-weight: 700;
+    padding-top: 12px;
+    border-top: 1px solid #cccccc;
+}
+
+.cartCheckoutButton {
+    width: 100%;
+    margin-top: 20px;
+}
+
 @media (max-width: 860px) {
     .page-shell {
         grid-template-columns: 1fr;
@@ -364,6 +479,14 @@ h1 {
     }
 
     .catalogueLayout {
+        grid-template-columns: 1fr;
+    }
+
+    .cartLayout {
+        grid-template-columns: 1fr;
+    }
+
+    .cartItemCard {
         grid-template-columns: 1fr;
     }
 
