@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main class="adminPageShell">
+        <section class="hero-panel fullWidthPanel">
+            <div class="topBarRow">
+                <div>
+                    <h1>Checkout</h1>
+                    <p class="hero-copy">
+                        Enter your shipping and payment details to complete your purchase.
+                    </p>
+                </div>
+
+                <div class="topButtonRow">
+                    <button class="action-card" type="button" id="checkout-back-button">Back To Cart</button>
+                    <button class="action-card" type="button" id="checkout-logout-button">Log Out</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="checkoutLayout">
+            <section class="form-panel">
+                <div class="panel-header">
+                    <h2>Shipping And Payment</h2>
+                </div>
+
+                <form id="checkout-form" class="auth-form">
+                    <label for="full-name">Full Name</label>
+                    <input id="full-name" type="text" required>
+
+                    <label for="address-line">Address</label>
+                    <input id="address-line" type="text" required>
+
+                    <label for="city">City</label>
+                    <input id="city" type="text" required>
+
+                    <label for="country">Country</label>
+                    <input id="country" type="text" required>
+
+                    <label for="card-name">Card Holder Name</label>
+                    <input id="card-name" type="text" required>
+
+                    <label for="card-number">Card Number</label>
+                    <input id="card-number" type="text" required>
+
+                    <label for="expiry-date">Expiry Date</label>
+                    <input id="expiry-date" type="text" placeholder="MM/YY" required>
+
+                    <label for="security-code">Security Code</label>
+                    <input id="security-code" type="text" required>
+
+                    <button class="submit-button" type="submit">Complete Checkout</button>
+                </form>
+
+                <div id="checkout-message" class="message-box hidden"></div>
+            </section>
+
+            <aside class="cartSummaryPanel">
+                <h2>Order Summary</h2>
+                <div id="checkout-items" class="checkoutItemsList"></div>
+                <div class="summaryRow">
+                    <span>Subtotal</span>
+                    <span id="checkout-subtotal">€0.00</span>
+                </div>
+                <div class="summaryRow">
+                    <span>Delivery</span>
+                    <span>€0.00</span>
+                </div>
+                <div class="summaryTotalRow">
+                    <span>Total</span>
+                    <span id="checkout-total">€0.00</span>
+                </div>
+            </aside>
+        </section>
+    </main>
+
+    <script src="Checkout.js"></script>
+</body>
+</html>

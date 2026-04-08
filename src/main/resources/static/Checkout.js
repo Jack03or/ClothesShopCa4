@@ -1,0 +1,78 @@
+const checkoutForm = document.getElementById("checkout-form");
+const checkoutItems = document.getElementById("checkout-items");
+const checkoutSubtotal = document.getElementById("checkout-subtotal");
+const checkoutTotal = document.getElementById("checkout-total");
+const checkoutMessage = document.getElementById("checkout-message");
+const checkoutBackButton = document.getElementById("checkout-back-button");
+const checkoutLogoutButton = document.getElementById("checkout-logout-button");
+const CHECKOUT_USERNAME = "customer";
+
+function formatCheckoutPrice(value) {
+    return "€" + Number(value).toFixed(2);
+}
+
+function showCheckoutMessage(message, isError) {
+    checkoutMessage.textContent = message;
+    checkoutMessage.classList.remove("hidden");
+    checkoutMessage.classList.toggle("error", isError);
+}
+
+async function loadCheckoutSummary() {
+    const response = await fetch("/cart?username=" + CHECKOUT_USERNAME);
+    const cart = await response.json();
+
+    checkoutItems.innerHTML = "";
+
+    if (!cart || !cart.items || cart.items.length === 0) {
+        checkoutItems.innerHTML = "<p>Your cart is empty.</p>";
+        checkoutSubtotal.textContent = "€0.00";
+        checkoutTotal.textContent = "€0.00";
+        return;
+    }
+
+    let subtotal = 0;
+
+    cart.items.forEach((item) => {
+        const line = document.createElement("div");
+        line.className = "checkoutItemRow";
+        const itemTotal = Number(item.price) * item.quantity;
+        subtotal += itemTotal;
+
+        line.innerHTML = `
+            <span>${item.productTitle} (${item.size}) x ${item.quantity}</span>
+            <span>${formatCheckoutPrice(itemTotal)}</span>
+        `;
+
+        checkoutItems.appendChild(line);
+    });
+
+    checkoutSubtotal.textContent = formatCheckoutPrice(subtotal);
+    checkoutTotal.textContent = formatCheckoutPrice(subtotal);
+}
+
+checkoutForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const response = await fetch("/checkout?username=" + CHECKOUT_USERNAME, {
+        method: "POST"
+    });
+
+    const result = await response.text();
+    const success = result.toLowerCase().includes("successfully");
+    showCheckoutMessage(result, !success);
+
+    if (success) {
+        checkoutForm.reset();
+        window.location.href = "/OrderComplete.html";
+    }
+});
+
+checkoutBackButton.addEventListener("click", () => {
+    window.location.href = "/Cart.html";
+});
+
+checkoutLogoutButton.addEventListener("click", () => {
+    window.location.href = "/";
+});
+
+loadCheckoutSummary();

@@ -3,6 +3,7 @@ const cartSubtotal = document.getElementById("cart-subtotal");
 const cartTotal = document.getElementById("cart-total");
 const cartBackButton = document.getElementById("cart-back-button");
 const cartLogoutButton = document.getElementById("cart-logout-button");
+const cartCheckoutButton = document.getElementById("cart-checkout-button");
 const CART_USERNAME = "customer";
 
 function formatPrice(value) {
@@ -88,6 +89,10 @@ cartBackButton.addEventListener("click", () => {
 
 cartLogoutButton.addEventListener("click", () => {
     window.location.href = "/";
+});
+
+cartCheckoutButton.addEventListener("click", () => {
+    window.location.href = "/Checkout.html";
 });
 
 loadCart();
