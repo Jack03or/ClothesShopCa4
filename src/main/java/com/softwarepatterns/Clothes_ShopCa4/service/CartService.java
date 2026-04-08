@@ -126,6 +126,11 @@ public class CartService {
         return "Cart item not found.";
     }
 
+    public void clearCart(Cart cart) {
+        cart.getItems().clear();
+        cartRepository.save(cart);
+    }
+
     private Cart getOrCreateCart(User user) {
         Cart cart = cartRepository.findByUserUsername(user.getUsername()).orElse(null);
 
