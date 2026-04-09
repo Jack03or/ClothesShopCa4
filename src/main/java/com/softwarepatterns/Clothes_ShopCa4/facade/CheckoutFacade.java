@@ -10,22 +10,22 @@ import com.softwarepatterns.Clothes_ShopCa4.model.CartItem;
 import com.softwarepatterns.Clothes_ShopCa4.model.Order;
 import com.softwarepatterns.Clothes_ShopCa4.model.OrderItem;
 import com.softwarepatterns.Clothes_ShopCa4.model.ProductVariant;
+import com.softwarepatterns.Clothes_ShopCa4.observer.PurchaseSubject;
 import com.softwarepatterns.Clothes_ShopCa4.service.CartService;
 import com.softwarepatterns.Clothes_ShopCa4.service.OrderService;
-import com.softwarepatterns.Clothes_ShopCa4.service.ProductVariantService;
 
 @Component
 public class CheckoutFacade {
 
     private CartService cartService;
     private OrderService orderService;
-    private ProductVariantService productVariantService;
+    private PurchaseSubject purchaseSubject;
 
     public CheckoutFacade(CartService cartService, OrderService orderService,
-            ProductVariantService productVariantService) {
+            PurchaseSubject purchaseSubject) {
         this.cartService = cartService;
         this.orderService = orderService;
-        this.productVariantService = productVariantService;
+        this.purchaseSubject = purchaseSubject;
     }
 
     public String checkout(String username) {
@@ -65,15 +65,11 @@ public class CheckoutFacade {
             order.getItems().add(orderItem);
 
             totalPrice = totalPrice.add(cartItem.getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())));
-
-            ProductVariant variant = cartItem.getProductVariant();
-            variant.setStockQuantity(variant.getStockQuantity() - cartItem.getQuantity());
-            productVariantService.saveProductVariant(variant);
         }
 
         order.setTotalPrice(totalPrice);
         orderService.saveOrder(order);
-        cartService.clearCart(cart);
+        purchaseSubject.notifyObservers(cart, order);
 
         return "Checkout completed successfully.";
     }
