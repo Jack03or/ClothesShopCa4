@@ -72,6 +72,28 @@ async function addToCart(selectedVariantId) {
     alert(result);
 }
 
+async function loadReviews(productId, reviewContainer) {
+    const response = await fetch("/reviews/product?productId=" + productId);
+    const reviews = await response.json();
+
+    reviewContainer.innerHTML = "";
+
+    if (reviews.length === 0) {
+        reviewContainer.innerHTML = "<p>No reviews yet.</p>";
+        return;
+    }
+
+    reviews.forEach((review) => {
+        const reviewItem = document.createElement("div");
+        reviewItem.className = "reviewItem";
+        reviewItem.innerHTML = `
+            <p><strong>${review.username}</strong> - Rating: ${review.rating}/5</p>
+            <p>${review.comment}</p>
+        `;
+        reviewContainer.appendChild(reviewItem);
+    });
+}
+
 async function loadCustomerProducts() {
     const response = await fetch(buildSearchUrl());
     const products = await response.json();
@@ -104,17 +126,64 @@ async function loadCustomerProducts() {
                 <label class="sizeLabel">Choose Size</label>
                 <select class="productSizeSelect">${sizeOptions}</select>
                 <button class="submit-button addCartButton" type="button">Add To Cart</button>
+
+                <div class="reviewSection">
+                    <h4>Leave A Review</h4>
+                    <select class="reviewRatingSelect">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    <textarea class="reviewCommentInput" placeholder="Write your comment here"></textarea>
+                    <button class="submit-button addReviewButton" type="button">Submit Review</button>
+                </div>
+
+                <div class="reviewList">
+                    <h4>Reviews</h4>
+                    <div class="productReviewContainer"></div>
+                </div>
             </div>
         `;
 
         const sizeSelect = card.querySelector(".productSizeSelect");
         const addCartButton = card.querySelector(".addCartButton");
+        const reviewRatingSelect = card.querySelector(".reviewRatingSelect");
+        const reviewCommentInput = card.querySelector(".reviewCommentInput");
+        const addReviewButton = card.querySelector(".addReviewButton");
+        const reviewContainer = card.querySelector(".productReviewContainer");
 
         addCartButton.addEventListener("click", () => {
             addToCart(sizeSelect.value);
         });
 
+        addReviewButton.addEventListener("click", async () => {
+            const response = await fetch("/reviews/add", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    productId: product.id,
+                    username: CURRENT_USERNAME,
+                    rating: Number(reviewRatingSelect.value),
+                    comment: reviewCommentInput.value
+                })
+            });
+
+            const result = await response.text();
+            alert(result);
+
+            if (result.toLowerCase().includes("successfully")) {
+                reviewCommentInput.value = "";
+                reviewRatingSelect.value = "1";
+                loadReviews(product.id, reviewContainer);
+            }
+        });
+
         customerProductList.appendChild(card);
+        loadReviews(product.id, reviewContainer);
     });
 }
 
