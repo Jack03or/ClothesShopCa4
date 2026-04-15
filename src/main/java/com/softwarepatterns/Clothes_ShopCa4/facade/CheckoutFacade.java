@@ -1,12 +1,12 @@
 package com.softwarepatterns.Clothes_ShopCa4.facade;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Component;
 
 import com.softwarepatterns.Clothes_ShopCa4.model.Cart;
 import com.softwarepatterns.Clothes_ShopCa4.model.CartItem;
+import com.softwarepatterns.Clothes_ShopCa4.model.CartSummaryResponse;
 import com.softwarepatterns.Clothes_ShopCa4.model.Order;
 import com.softwarepatterns.Clothes_ShopCa4.model.OrderItem;
 import com.softwarepatterns.Clothes_ShopCa4.model.ProductVariant;
@@ -52,8 +52,6 @@ public class CheckoutFacade {
         order.setStatus("PENDING");
         order.setCreatedAt(LocalDateTime.now());
 
-        BigDecimal totalPrice = BigDecimal.ZERO;
-
         for (CartItem cartItem : cart.getItems()) {
             OrderItem orderItem = new OrderItem();
             orderItem.setProductTitle(cartItem.getProductTitle());
@@ -63,11 +61,13 @@ public class CheckoutFacade {
             orderItem.setPrice(cartItem.getPrice());
             orderItem.setQuantity(cartItem.getQuantity());
             order.getItems().add(orderItem);
-
-            totalPrice = totalPrice.add(cartItem.getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())));
         }
 
-        order.setTotalPrice(totalPrice);
+        CartSummaryResponse cartSummary = cartService.buildCartSummary(cart);
+
+        order.setSubtotalPrice(cartSummary.getSubtotal());
+        order.setDiscountAmount(cartSummary.getDiscountAmount());
+        order.setTotalPrice(cartSummary.getTotalPrice());
         orderService.saveOrder(order);
         purchaseSubject.notifyObservers(cart, order);
 

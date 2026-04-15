@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.softwarepatterns.Clothes_ShopCa4.model.Cart;
 import com.softwarepatterns.Clothes_ShopCa4.model.CartAddRequest;
+import com.softwarepatterns.Clothes_ShopCa4.model.CartSummaryResponse;
 import com.softwarepatterns.Clothes_ShopCa4.model.CartUpdateRequest;
 import com.softwarepatterns.Clothes_ShopCa4.service.CartService;
 
@@ -30,8 +30,8 @@ public class CartController {
     }
 
     @GetMapping
-    public Cart getCart(@RequestParam String username) {
-        return cartService.getCartByUsername(username);
+    public CartSummaryResponse getCart(@RequestParam String username) {
+        return cartService.getCartSummaryByUsername(username);
     }
 
     @PutMapping("/update")

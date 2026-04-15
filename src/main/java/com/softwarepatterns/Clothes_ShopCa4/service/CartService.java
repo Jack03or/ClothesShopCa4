@@ -1,18 +1,22 @@
 package com.softwarepatterns.Clothes_ShopCa4.service;
 
 import java.util.List;
+import java.math.BigDecimal;
 
 import org.springframework.stereotype.Service;
 
 import com.softwarepatterns.Clothes_ShopCa4.model.Cart;
 import com.softwarepatterns.Clothes_ShopCa4.model.CartItem;
+import com.softwarepatterns.Clothes_ShopCa4.model.CartSummaryResponse;
 import com.softwarepatterns.Clothes_ShopCa4.model.Product;
 import com.softwarepatterns.Clothes_ShopCa4.model.ProductVariant;
 import com.softwarepatterns.Clothes_ShopCa4.model.User;
+import com.softwarepatterns.Clothes_ShopCa4.factory.DiscountStrategyFactory;
 import com.softwarepatterns.Clothes_ShopCa4.repository.CartRepository;
 import com.softwarepatterns.Clothes_ShopCa4.repository.ProductRepository;
 import com.softwarepatterns.Clothes_ShopCa4.repository.ProductVariantRepository;
 import com.softwarepatterns.Clothes_ShopCa4.repository.UserRepository;
+import com.softwarepatterns.Clothes_ShopCa4.strategy.DiscountStrategy;
 
 @Service
 public class CartService {
@@ -21,13 +25,16 @@ public class CartService {
     private UserRepository userRepository;
     private ProductVariantRepository productVariantRepository;
     private ProductRepository productRepository;
+    private DiscountStrategyFactory discountStrategyFactory;
 
     public CartService(CartRepository cartRepository, UserRepository userRepository,
-            ProductVariantRepository productVariantRepository, ProductRepository productRepository) {
+            ProductVariantRepository productVariantRepository, ProductRepository productRepository,
+            DiscountStrategyFactory discountStrategyFactory) {
         this.cartRepository = cartRepository;
         this.userRepository = userRepository;
         this.productVariantRepository = productVariantRepository;
         this.productRepository = productRepository;
+        this.discountStrategyFactory = discountStrategyFactory;
     }
 
     public String addToCart(String username, Long productVariantId, int quantity) {
@@ -86,6 +93,16 @@ public class CartService {
         return cartRepository.findByUserUsername(username).orElse(null);
     }
 
+    public CartSummaryResponse getCartSummaryByUsername(String username) {
+        Cart cart = cartRepository.findByUserUsername(username).orElse(null);
+
+        if (cart == null) {
+            return null;
+        }
+
+        return buildCartSummary(cart);
+    }
+
     public String updateCartItem(String username, Long cartItemId, int quantity) {
         Cart cart = cartRepository.findByUserUsername(username).orElse(null);
 
@@ -131,6 +148,24 @@ public class CartService {
         cartRepository.save(cart);
     }
 
+    public CartSummaryResponse buildCartSummary(Cart cart) {
+        CartSummaryResponse summary = new CartSummaryResponse();
+        BigDecimal subtotal = calculateSubtotal(cart);
+        DiscountStrategy discountStrategy = discountStrategyFactory.createDiscountStrategy(cart.getUser());
+        BigDecimal discountAmount = discountStrategy.calculateDiscount(subtotal);
+        BigDecimal totalPrice = subtotal.subtract(discountAmount);
+
+        summary.setId(cart.getId());
+        summary.setUsername(cart.getUser().getUsername());
+        summary.setLoyaltyCard(cart.getUser().isHasLoyaltyCard());
+        summary.setItems(cart.getItems());
+        summary.setSubtotal(subtotal);
+        summary.setDiscountAmount(discountAmount);
+        summary.setTotalPrice(totalPrice);
+
+        return summary;
+    }
+
     private Cart getOrCreateCart(User user) {
         Cart cart = cartRepository.findByUserUsername(user.getUsername()).orElse(null);
 
@@ -164,5 +199,15 @@ public class CartService {
         }
 
         return null;
+    }
+
+    private BigDecimal calculateSubtotal(Cart cart) {
+        BigDecimal subtotal = BigDecimal.ZERO;
+
+        for (CartItem item : cart.getItems()) {
+            subtotal = subtotal.add(item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
+        }
+
+        return subtotal;
     }
 }

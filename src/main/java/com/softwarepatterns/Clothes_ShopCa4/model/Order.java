@@ -32,7 +32,13 @@ public class Order {
     @JoinColumn(name = "order_id")
     private List<OrderItem> items = new ArrayList<OrderItem>();
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "DECIMAL(10,2) DEFAULT 0.00")
+    private BigDecimal subtotalPrice;
+
+    @Column(nullable = false, columnDefinition = "DECIMAL(10,2) DEFAULT 0.00")
+    private BigDecimal discountAmount;
+
+    @Column(nullable = false, columnDefinition = "DECIMAL(10,2) DEFAULT 0.00")
     private BigDecimal totalPrice;
 
     @Column(nullable = false)
@@ -75,6 +81,22 @@ public class Order {
 
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public BigDecimal getSubtotalPrice() {
+        return subtotalPrice;
+    }
+
+    public void setSubtotalPrice(BigDecimal subtotalPrice) {
+        this.subtotalPrice = subtotalPrice;
+    }
+
+    public BigDecimal getDiscountAmount() {
+        return discountAmount;
+    }
+
+    public void setDiscountAmount(BigDecimal discountAmount) {
+        this.discountAmount = discountAmount;
     }
 
     public String getStatus() {

@@ -35,4 +35,16 @@ public class UserService {
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+
+    public String updateLoyaltyCard(String username, boolean hasLoyaltyCard) {
+        User user = userRepository.findByUsername(username).orElse(null);
+
+        if (user == null) {
+            return "User not found.";
+        }
+
+        user.setHasLoyaltyCard(hasLoyaltyCard);
+        userRepository.save(user);
+        return "Loyalty card updated successfully.";
+    }
 }

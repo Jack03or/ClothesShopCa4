@@ -27,6 +27,9 @@ public class User {
     @Column(nullable = false)
     private String role;
 
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private boolean hasLoyaltyCard;
+
     public User() {
 
     }
@@ -36,6 +39,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.role = role;
+        this.hasLoyaltyCard = false;
     }
 
     public Long getId() {
@@ -76,5 +80,13 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public boolean isHasLoyaltyCard() {
+        return hasLoyaltyCard;
+    }
+
+    public void setHasLoyaltyCard(boolean hasLoyaltyCard) {
+        this.hasLoyaltyCard = hasLoyaltyCard;
     }
 }

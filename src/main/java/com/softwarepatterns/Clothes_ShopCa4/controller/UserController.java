@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.softwarepatterns.Clothes_ShopCa4.model.LoyaltyCardRequest;
 import com.softwarepatterns.Clothes_ShopCa4.model.User;
 import com.softwarepatterns.Clothes_ShopCa4.service.UserService;
 
@@ -82,5 +84,14 @@ public class UserController {
     @GetMapping("/all")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
+    }
+
+    @PutMapping("/loyalty")
+    public String updateLoyaltyCard(@RequestBody LoyaltyCardRequest request) {
+        if (request.getUsername() == null || request.getUsername().isBlank()) {
+            return "Username is required.";
+        }
+
+        return userService.updateLoyaltyCard(request.getUsername(), request.isHasLoyaltyCard());
     }
 }
