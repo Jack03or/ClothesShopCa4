@@ -44,6 +44,11 @@ function hideMessage() {
     messageBox.textContent = "";
 }
 
+function saveLoggedInUser(username, role) {
+    sessionStorage.setItem("loggedInUsername", username);
+    sessionStorage.setItem("loggedInRole", role);
+}
+
 async function sendRequest(url, bodyData) {
     const response = await fetch(url, {
         method: "POST",
@@ -92,7 +97,8 @@ forms["customer-login"].addEventListener("submit", async (event) => {
     showMessage(result, !result.toLowerCase().includes("login successful"));
 
     if (result.toLowerCase().includes("login successful")) {
-        window.location.href = "/CustomerProducts.html";
+        saveLoggedInUser(bodyData.username, "CUSTOMER");
+        window.location.href = "/CustomerProducts.html?username=" + encodeURIComponent(bodyData.username);
     }
 });
 
@@ -109,6 +115,7 @@ forms["admin-login"].addEventListener("submit", async (event) => {
     showMessage(result, !result.toLowerCase().includes("login successful"));
 
     if (result.toLowerCase().includes("login successful")) {
-        window.location.href = "/AdminProducts.html";
+        saveLoggedInUser(bodyData.username, "ADMIN");
+        window.location.href = "/AdminProducts.html?username=" + encodeURIComponent(bodyData.username);
     }
 });

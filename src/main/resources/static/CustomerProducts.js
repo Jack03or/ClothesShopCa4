@@ -9,12 +9,64 @@ const filterCategoryInput = document.getElementById("filter-category");
 const filterSizeInput = document.getElementById("filter-size");
 const sortByInput = document.getElementById("sort-by");
 const sortDirectionInput = document.getElementById("sort-direction");
-const CURRENT_USERNAME = "customer";
+
+function getCurrentUsername() {
+    return sessionStorage.getItem("loggedInUsername");
+}
+
+function getUsernameFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("username");
+}
+
+function ensureCustomerSession() {
+    const username = getCurrentUsername();
+    const usernameFromUrl = getUsernameFromUrl();
+
+    if (!username && usernameFromUrl) {
+        sessionStorage.setItem("loggedInUsername", usernameFromUrl);
+        sessionStorage.setItem("loggedInRole", "CUSTOMER");
+        return usernameFromUrl;
+    }
+
+    return username;
+}
+
+function requireCustomerLogin() {
+    const username = ensureCustomerSession();
+
+    if (!username) {
+        window.location.href = "/";
+        return null;
+    }
+
+    return username;
+}
+
+function logoutUser() {
+    sessionStorage.removeItem("loggedInUsername");
+    sessionStorage.removeItem("loggedInRole");
+    window.location.href = "/";
+}
 
 function buildStockText(variants) {
     return variants
         .map((variant) => variant.size + ": " + variant.stockQuantity)
         .join(", ");
+}
+
+function buildStars(rating) {
+    let stars = "";
+
+    for (let i = 1; i <= 5; i++) {
+        if (i <= rating) {
+            stars = stars + "★";
+        } else {
+            stars = stars + "☆";
+        }
+    }
+
+    return stars;
 }
 
 function buildSearchUrl() {
@@ -51,6 +103,13 @@ function buildSearchUrl() {
 }
 
 async function addToCart(selectedVariantId) {
+    const currentUsername = getCurrentUsername();
+
+    if (!currentUsername) {
+        window.location.href = "/";
+        return;
+    }
+
     if (selectedVariantId === "") {
         alert("Please select a size first.");
         return;
@@ -62,7 +121,7 @@ async function addToCart(selectedVariantId) {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            username: CURRENT_USERNAME,
+            username: currentUsername,
             productVariantId: Number(selectedVariantId),
             quantity: 1
         })
@@ -87,7 +146,8 @@ async function loadReviews(productId, reviewContainer) {
         const reviewItem = document.createElement("div");
         reviewItem.className = "reviewItem";
         reviewItem.innerHTML = `
-            <p><strong>${review.username}</strong> - Rating: ${review.rating}/5</p>
+            <p><strong>${review.username}</strong></p>
+            <p class="reviewStars">${buildStars(review.rating)}</p>
             <p>${review.comment}</p>
         `;
         reviewContainer.appendChild(reviewItem);
@@ -129,13 +189,13 @@ async function loadCustomerProducts() {
 
                 <div class="reviewSection">
                     <h4>Leave A Review</h4>
-                    <select class="reviewRatingSelect">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
+                    <div class="starRating">
+                        <button class="starButton active" type="button" data-rating="1">★</button>
+                        <button class="starButton" type="button" data-rating="2">★</button>
+                        <button class="starButton" type="button" data-rating="3">★</button>
+                        <button class="starButton" type="button" data-rating="4">★</button>
+                        <button class="starButton" type="button" data-rating="5">★</button>
+                    </div>
                     <textarea class="reviewCommentInput" placeholder="Write your comment here"></textarea>
                     <button class="submit-button addReviewButton" type="button">Submit Review</button>
                 </div>
@@ -149,16 +209,38 @@ async function loadCustomerProducts() {
 
         const sizeSelect = card.querySelector(".productSizeSelect");
         const addCartButton = card.querySelector(".addCartButton");
-        const reviewRatingSelect = card.querySelector(".reviewRatingSelect");
+        const starButtons = card.querySelectorAll(".starButton");
         const reviewCommentInput = card.querySelector(".reviewCommentInput");
         const addReviewButton = card.querySelector(".addReviewButton");
         const reviewContainer = card.querySelector(".productReviewContainer");
+        let selectedRating = 1;
 
         addCartButton.addEventListener("click", () => {
             addToCart(sizeSelect.value);
         });
 
+        starButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                selectedRating = Number(button.dataset.rating);
+
+                starButtons.forEach((starButton) => {
+                    if (Number(starButton.dataset.rating) <= selectedRating) {
+                        starButton.classList.add("active");
+                    } else {
+                        starButton.classList.remove("active");
+                    }
+                });
+            });
+        });
+
         addReviewButton.addEventListener("click", async () => {
+            const currentUsername = getCurrentUsername();
+
+            if (!currentUsername) {
+                window.location.href = "/";
+                return;
+            }
+
             const response = await fetch("/reviews/add", {
                 method: "POST",
                 headers: {
@@ -166,8 +248,8 @@ async function loadCustomerProducts() {
                 },
                 body: JSON.stringify({
                     productId: product.id,
-                    username: CURRENT_USERNAME,
-                    rating: Number(reviewRatingSelect.value),
+                    username: currentUsername,
+                    rating: selectedRating,
                     comment: reviewCommentInput.value
                 })
             });
@@ -177,7 +259,14 @@ async function loadCustomerProducts() {
 
             if (result.toLowerCase().includes("successfully")) {
                 reviewCommentInput.value = "";
-                reviewRatingSelect.value = "1";
+                selectedRating = 1;
+                starButtons.forEach((starButton) => {
+                    if (Number(starButton.dataset.rating) <= selectedRating) {
+                        starButton.classList.add("active");
+                    } else {
+                        starButton.classList.remove("active");
+                    }
+                });
                 loadReviews(product.id, reviewContainer);
             }
         });
@@ -198,7 +287,7 @@ function clearFilters() {
 }
 
 customerLogoutButton.addEventListener("click", () => {
-    window.location.href = "/";
+    logoutUser();
 });
 
 viewCartButton.addEventListener("click", () => {
@@ -208,4 +297,6 @@ viewCartButton.addEventListener("click", () => {
 applyFiltersButton.addEventListener("click", loadCustomerProducts);
 clearFiltersButton.addEventListener("click", clearFilters);
 
-loadCustomerProducts();
+if (requireCustomerLogin()) {
+    loadCustomerProducts();
+}

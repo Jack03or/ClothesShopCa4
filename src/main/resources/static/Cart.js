@@ -4,14 +4,41 @@ const cartTotal = document.getElementById("cart-total");
 const cartBackButton = document.getElementById("cart-back-button");
 const cartLogoutButton = document.getElementById("cart-logout-button");
 const cartCheckoutButton = document.getElementById("cart-checkout-button");
-const CART_USERNAME = "customer";
+
+function getCartUsername() {
+    return sessionStorage.getItem("loggedInUsername");
+}
+
+function requireCartLogin() {
+    const username = getCartUsername();
+
+    if (!username) {
+        window.location.href = "/";
+        return null;
+    }
+
+    return username;
+}
+
+function logoutCartUser() {
+    sessionStorage.removeItem("loggedInUsername");
+    sessionStorage.removeItem("loggedInRole");
+    window.location.href = "/";
+}
 
 function formatPrice(value) {
     return "€" + Number(value).toFixed(2);
 }
 
 async function loadCart() {
-    const response = await fetch("/cart?username=" + CART_USERNAME);
+    const cartUsername = getCartUsername();
+
+    if (!cartUsername) {
+        window.location.href = "/";
+        return;
+    }
+
+    const response = await fetch("/cart?username=" + cartUsername);
     const cart = await response.json();
 
     cartItemsContainer.innerHTML = "";
@@ -59,7 +86,7 @@ async function loadCart() {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    username: CART_USERNAME,
+                    username: cartUsername,
                     cartItemId: item.id,
                     quantity: Number(qtyInput.value)
                 })
@@ -69,7 +96,7 @@ async function loadCart() {
         });
 
         removeButton.addEventListener("click", async () => {
-            await fetch("/cart/remove?username=" + CART_USERNAME + "&cartItemId=" + item.id, {
+            await fetch("/cart/remove?username=" + cartUsername + "&cartItemId=" + item.id, {
                 method: "DELETE"
             });
 
@@ -88,11 +115,13 @@ cartBackButton.addEventListener("click", () => {
 });
 
 cartLogoutButton.addEventListener("click", () => {
-    window.location.href = "/";
+    logoutCartUser();
 });
 
 cartCheckoutButton.addEventListener("click", () => {
     window.location.href = "/Checkout.html";
 });
 
-loadCart();
+if (requireCartLogin()) {
+    loadCart();
+}

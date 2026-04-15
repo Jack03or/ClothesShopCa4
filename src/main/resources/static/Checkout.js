@@ -5,7 +5,27 @@ const checkoutTotal = document.getElementById("checkout-total");
 const checkoutMessage = document.getElementById("checkout-message");
 const checkoutBackButton = document.getElementById("checkout-back-button");
 const checkoutLogoutButton = document.getElementById("checkout-logout-button");
-const CHECKOUT_USERNAME = "customer";
+
+function getCheckoutUsername() {
+    return sessionStorage.getItem("loggedInUsername");
+}
+
+function requireCheckoutLogin() {
+    const username = getCheckoutUsername();
+
+    if (!username) {
+        window.location.href = "/";
+        return null;
+    }
+
+    return username;
+}
+
+function logoutCheckoutUser() {
+    sessionStorage.removeItem("loggedInUsername");
+    sessionStorage.removeItem("loggedInRole");
+    window.location.href = "/";
+}
 
 function formatCheckoutPrice(value) {
     return "€" + Number(value).toFixed(2);
@@ -18,7 +38,14 @@ function showCheckoutMessage(message, isError) {
 }
 
 async function loadCheckoutSummary() {
-    const response = await fetch("/cart?username=" + CHECKOUT_USERNAME);
+    const checkoutUsername = getCheckoutUsername();
+
+    if (!checkoutUsername) {
+        window.location.href = "/";
+        return;
+    }
+
+    const response = await fetch("/cart?username=" + checkoutUsername);
     const cart = await response.json();
 
     checkoutItems.innerHTML = "";
@@ -53,7 +80,14 @@ async function loadCheckoutSummary() {
 checkoutForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    const response = await fetch("/checkout?username=" + CHECKOUT_USERNAME, {
+    const checkoutUsername = getCheckoutUsername();
+
+    if (!checkoutUsername) {
+        window.location.href = "/";
+        return;
+    }
+
+    const response = await fetch("/checkout?username=" + checkoutUsername, {
         method: "POST"
     });
 
@@ -72,7 +106,9 @@ checkoutBackButton.addEventListener("click", () => {
 });
 
 checkoutLogoutButton.addEventListener("click", () => {
-    window.location.href = "/";
+    logoutCheckoutUser();
 });
 
-loadCheckoutSummary();
+if (requireCheckoutLogin()) {
+    loadCheckoutSummary();
+}
