@@ -8,6 +8,7 @@ function showProductMessage(message, isError = false) {
     productMessageBox.textContent = message;
     productMessageBox.classList.remove("hidden");
     productMessageBox.classList.toggle("error", isError);
+    productMessageBox.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
 function createVariant(size, stockQuantity) {
@@ -27,6 +28,45 @@ function buildVariants() {
     ];
 }
 
+function buildVariantText(variants) {
+    let variantText = "";
+
+    for (let i = 0; i < variants.length; i++) {
+        if (i > 0) {
+            variantText = variantText + ", ";
+        }
+
+        variantText = variantText + variants[i].size + ": " + variants[i].stockQuantity;
+    }
+
+    return variantText;
+}
+
+function buildVariantOptions(variants) {
+    let variantOptions = "";
+
+    for (let i = 0; i < variants.length; i++) {
+        variantOptions = variantOptions + "<option value='" + variants[i].id + "'>" + variants[i].size + "</option>";
+    }
+
+    return variantOptions;
+}
+
+async function addWholesalerStock(productVariantId, quantity) {
+    const response = await fetch("/products/wholesaler-stock", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            productVariantId: Number(productVariantId),
+            quantity: Number(quantity)
+        })
+    });
+
+    return response.text();
+}
+
 async function loadProducts() {
     const response = await fetch("/products/all");
     const products = await response.json();
@@ -38,25 +78,40 @@ async function loadProducts() {
         return;
     }
 
-    products.forEach((product) => {
+    for (let i = 0; i < products.length; i++) {
+        const product = products[i];
         const item = document.createElement("div");
         item.className = "productRow";
-
-        const variantText = product.variants
-            .map((variant) => variant.size + ": " + variant.stockQuantity)
-            .join(", ");
 
         item.innerHTML = `
             <span>${product.title}</span>
             <span>${product.manufacturer}</span>
             <span>${product.category}</span>
-            <span>€${product.price}</span>
+            <span>EUR${product.price}</span>
             <span>${product.imageUrl}</span>
-            <span>${variantText}</span>
+            <span>${buildVariantText(product.variants)}</span>
+            <div class="stockActionBox">
+                <select class="stockVariantSelect">${buildVariantOptions(product.variants)}</select>
+                <input type="number" min="1" value="1" class="stockQuantityInput">
+                <button type="button" class="submit-button stockUpdateButton">Add Stock</button>
+            </div>
         `;
 
+        const stockVariantSelect = item.querySelector(".stockVariantSelect");
+        const stockQuantityInput = item.querySelector(".stockQuantityInput");
+        const stockUpdateButton = item.querySelector(".stockUpdateButton");
+
+        stockUpdateButton.addEventListener("click", async () => {
+            const result = await addWholesalerStock(stockVariantSelect.value, stockQuantityInput.value);
+            showProductMessage(result, !result.toLowerCase().includes("updated"));
+
+            if (result.toLowerCase().includes("updated")) {
+                loadProducts();
+            }
+        });
+
         productList.appendChild(item);
-    });
+    }
 }
 
 productForm.addEventListener("submit", async (event) => {

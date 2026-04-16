@@ -237,7 +237,7 @@ h1 {
 .productListHeader,
 .productRow {
     display: grid;
-    grid-template-columns: 1.3fr 1fr 1fr 0.7fr 0.9fr 1.6fr;
+    grid-template-columns: 1.1fr 0.9fr 0.9fr 0.7fr 0.8fr 1.3fr 1.2fr;
     gap: 14px;
     align-items: center;
 }
@@ -256,6 +256,26 @@ h1 {
     border-radius: 4px;
     padding: 14px;
     background: #ffffff;
+}
+
+.stockActionBox {
+    display: grid;
+    gap: 8px;
+}
+
+.stockVariantSelect,
+.stockQuantityInput {
+    width: 100%;
+    padding: 9px 10px;
+    border-radius: 4px;
+    border: 1px solid #bbbbbb;
+    background: #fff;
+    font-size: 0.95rem;
+}
+
+.stockUpdateButton {
+    margin-top: 0;
+    padding: 10px 12px;
 }
 
 .section-title {
