@@ -1,6 +1,7 @@
 const checkoutForm = document.getElementById("checkout-form");
 const checkoutItems = document.getElementById("checkout-items");
 const checkoutSubtotal = document.getElementById("checkout-subtotal");
+const checkoutDiscount = document.getElementById("checkout-discount");
 const checkoutTotal = document.getElementById("checkout-total");
 const checkoutMessage = document.getElementById("checkout-message");
 const checkoutBackButton = document.getElementById("checkout-back-button");
@@ -28,7 +29,7 @@ function logoutCheckoutUser() {
 }
 
 function formatCheckoutPrice(value) {
-    return "€" + Number(value).toFixed(2);
+    return "EUR" + Number(value).toFixed(2);
 }
 
 function showCheckoutMessage(message, isError) {
@@ -52,18 +53,16 @@ async function loadCheckoutSummary() {
 
     if (!cart || !cart.items || cart.items.length === 0) {
         checkoutItems.innerHTML = "<p>Your cart is empty.</p>";
-        checkoutSubtotal.textContent = "€0.00";
-        checkoutTotal.textContent = "€0.00";
+        checkoutSubtotal.textContent = "EUR0.00";
+        checkoutDiscount.textContent = "EUR0.00";
+        checkoutTotal.textContent = "EUR0.00";
         return;
     }
-
-    let subtotal = 0;
 
     cart.items.forEach((item) => {
         const line = document.createElement("div");
         line.className = "checkoutItemRow";
         const itemTotal = Number(item.price) * item.quantity;
-        subtotal += itemTotal;
 
         line.innerHTML = `
             <span>${item.productTitle} (${item.size}) x ${item.quantity}</span>
@@ -73,8 +72,9 @@ async function loadCheckoutSummary() {
         checkoutItems.appendChild(line);
     });
 
-    checkoutSubtotal.textContent = formatCheckoutPrice(subtotal);
-    checkoutTotal.textContent = formatCheckoutPrice(subtotal);
+    checkoutSubtotal.textContent = formatCheckoutPrice(cart.subtotal);
+    checkoutDiscount.textContent = formatCheckoutPrice(cart.discountAmount);
+    checkoutTotal.textContent = formatCheckoutPrice(cart.totalPrice);
 }
 
 checkoutForm.addEventListener("submit", async (event) => {

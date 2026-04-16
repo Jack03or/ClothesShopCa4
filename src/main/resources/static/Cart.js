@@ -1,5 +1,6 @@
 const cartItemsContainer = document.getElementById("cart-items");
 const cartSubtotal = document.getElementById("cart-subtotal");
+const cartDiscount = document.getElementById("cart-discount");
 const cartTotal = document.getElementById("cart-total");
 const cartBackButton = document.getElementById("cart-back-button");
 const cartLogoutButton = document.getElementById("cart-logout-button");
@@ -27,7 +28,7 @@ function logoutCartUser() {
 }
 
 function formatPrice(value) {
-    return "€" + Number(value).toFixed(2);
+    return "EUR" + Number(value).toFixed(2);
 }
 
 async function loadCart() {
@@ -45,16 +46,14 @@ async function loadCart() {
 
     if (!cart || !cart.items || cart.items.length === 0) {
         cartItemsContainer.innerHTML = "<div class='cartItemCard'><h3>Your cart is empty.</h3></div>";
-        cartSubtotal.textContent = "€0.00";
-        cartTotal.textContent = "€0.00";
+        cartSubtotal.textContent = "EUR0.00";
+        cartDiscount.textContent = "EUR0.00";
+        cartTotal.textContent = "EUR0.00";
         return;
     }
 
-    let subtotal = 0;
-
     cart.items.forEach((item) => {
         const itemTotal = Number(item.price) * item.quantity;
-        subtotal += itemTotal;
 
         const cartCard = document.createElement("div");
         cartCard.className = "cartItemCard";
@@ -106,8 +105,9 @@ async function loadCart() {
         cartItemsContainer.appendChild(cartCard);
     });
 
-    cartSubtotal.textContent = formatPrice(subtotal);
-    cartTotal.textContent = formatPrice(subtotal);
+    cartSubtotal.textContent = formatPrice(cart.subtotal);
+    cartDiscount.textContent = formatPrice(cart.discountAmount);
+    cartTotal.textContent = formatPrice(cart.totalPrice);
 }
 
 cartBackButton.addEventListener("click", () => {

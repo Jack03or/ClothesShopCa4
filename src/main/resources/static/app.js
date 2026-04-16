@@ -74,7 +74,8 @@ forms.register.addEventListener("submit", async (event) => {
         username: document.getElementById("register-username").value,
         email: document.getElementById("register-email").value,
         password: document.getElementById("register-password").value,
-        role: "CUSTOMER"
+        role: "CUSTOMER",
+        hasLoyaltyCard: document.getElementById("register-loyalty-card").checked
     };
 
     const result = await sendRequest("/users/register", bodyData);

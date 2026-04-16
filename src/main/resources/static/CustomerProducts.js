@@ -9,6 +9,8 @@ const filterCategoryInput = document.getElementById("filter-category");
 const filterSizeInput = document.getElementById("filter-size");
 const sortByInput = document.getElementById("sort-by");
 const sortDirectionInput = document.getElementById("sort-direction");
+const loyaltyStatusText = document.getElementById("loyalty-status-text");
+const toggleLoyaltyButton = document.getElementById("toggle-loyalty-button");
 
 function getCurrentUsername() {
     return sessionStorage.getItem("loggedInUsername");
@@ -47,6 +49,68 @@ function logoutUser() {
     sessionStorage.removeItem("loggedInUsername");
     sessionStorage.removeItem("loggedInRole");
     window.location.href = "/";
+}
+
+async function loadCurrentUser() {
+    const currentUsername = getCurrentUsername();
+
+    if (!currentUsername) {
+        return null;
+    }
+
+    const response = await fetch("/users/all");
+    const users = await response.json();
+
+    for (let i = 0; i < users.length; i++) {
+        if (users[i].username === currentUsername) {
+            return users[i];
+        }
+    }
+
+    return null;
+}
+
+async function loadLoyaltyStatus() {
+    const user = await loadCurrentUser();
+
+    if (!user) {
+        loyaltyStatusText.textContent = "Loyalty Card: Not available";
+        toggleLoyaltyButton.textContent = "Add Loyalty Card";
+        return;
+    }
+
+    if (user.hasLoyaltyCard) {
+        loyaltyStatusText.textContent = "Loyalty Card: Active (10% discount applies)";
+        toggleLoyaltyButton.textContent = "Remove Loyalty Card";
+    } else {
+        loyaltyStatusText.textContent = "Loyalty Card: Not added";
+        toggleLoyaltyButton.textContent = "Add Loyalty Card";
+    }
+}
+
+async function toggleLoyaltyCard() {
+    const user = await loadCurrentUser();
+    const currentUsername = getCurrentUsername();
+
+    if (!user || !currentUsername) {
+        window.location.href = "/";
+        return;
+    }
+
+    const response = await fetch("/users/loyalty", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            username: currentUsername,
+            hasLoyaltyCard: !user.hasLoyaltyCard
+        })
+    });
+
+    const result = await response.text();
+    alert(result);
+    await loadLoyaltyStatus();
 }
 
 function buildStockText(variants) {
@@ -296,7 +360,9 @@ viewCartButton.addEventListener("click", () => {
 
 applyFiltersButton.addEventListener("click", loadCustomerProducts);
 clearFiltersButton.addEventListener("click", clearFilters);
+toggleLoyaltyButton.addEventListener("click", toggleLoyaltyCard);
 
 if (requireCustomerLogin()) {
+    loadLoyaltyStatus();
     loadCustomerProducts();
 }
