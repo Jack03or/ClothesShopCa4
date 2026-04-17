@@ -108,6 +108,68 @@
         <div class="list-header">
             <h2>Current Products</h2>
         </div>
+        <div class="adminFilterGrid">
+            <div class="formField">
+                <label for="admin-search-title">Search Title</label>
+                <input id="admin-search-title" type="text" placeholder="Search by title">
+            </div>
+
+            <div class="formField">
+                <label for="admin-search-manufacturer">Search Manufacturer</label>
+                <input id="admin-search-manufacturer" type="text" placeholder="Search by manufacturer">
+            </div>
+
+            <div class="formField">
+                <label for="admin-filter-category">Category</label>
+                <select id="admin-filter-category">
+                    <option value="">All Categories</option>
+                    <option value="T-Shirts">T-Shirts</option>
+                    <option value="Hoodies">Hoodies</option>
+                    <option value="Jeans">Jeans</option>
+                    <option value="Jackets">Jackets</option>
+                    <option value="Tracksuits">Tracksuits</option>
+                    <option value="Dresses">Dresses</option>
+                    <option value="Trousers">Trousers</option>
+                    <option value="Shorts">Shorts</option>
+                </select>
+            </div>
+
+            <div class="formField">
+                <label for="admin-filter-size">Size</label>
+                <select id="admin-filter-size">
+                    <option value="">All Sizes</option>
+                    <option value="XS">XS</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                </select>
+            </div>
+
+            <div class="formField">
+                <label for="admin-sort-by">Sort By</label>
+                <select id="admin-sort-by">
+                    <option value="">Default</option>
+                    <option value="title">Title</option>
+                    <option value="manufacturer">Manufacturer</option>
+                    <option value="price">Price</option>
+                </select>
+            </div>
+
+            <div class="formField">
+                <label for="admin-sort-direction">Order</label>
+                <select id="admin-sort-direction">
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="adminFilterButtonRow">
+            <button class="submit-button" type="button" id="admin-apply-filters-button">Search</button>
+            <button class="action-card adminClearButton" type="button" id="admin-clear-filters-button">Clear</button>
+        </div>
+
         <div class="productListHeader">
             <span>Title</span>
             <span>Manufacturer</span>

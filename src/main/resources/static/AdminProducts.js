@@ -4,6 +4,14 @@ const productList = document.getElementById("product-list");
 const viewCustomersButton = document.getElementById("view-customers-button");
 const loadProductsButton = document.getElementById("load-products-button");
 const backButton = document.getElementById("back-button");
+const adminSearchTitleInput = document.getElementById("admin-search-title");
+const adminSearchManufacturerInput = document.getElementById("admin-search-manufacturer");
+const adminFilterCategoryInput = document.getElementById("admin-filter-category");
+const adminFilterSizeInput = document.getElementById("admin-filter-size");
+const adminSortByInput = document.getElementById("admin-sort-by");
+const adminSortDirectionInput = document.getElementById("admin-sort-direction");
+const adminApplyFiltersButton = document.getElementById("admin-apply-filters-button");
+const adminClearFiltersButton = document.getElementById("admin-clear-filters-button");
 
 function showProductMessage(message, isError = false) {
     productMessageBox.textContent = message;
@@ -68,8 +76,39 @@ async function addWholesalerStock(productVariantId, quantity) {
     return response.text();
 }
 
+function buildAdminSearchUrl() {
+    const params = new URLSearchParams();
+
+    if (adminSearchTitleInput.value.trim() !== "") {
+        params.append("title", adminSearchTitleInput.value.trim());
+    }
+
+    if (adminSearchManufacturerInput.value.trim() !== "") {
+        params.append("manufacturer", adminSearchManufacturerInput.value.trim());
+    }
+
+    if (adminFilterCategoryInput.value !== "") {
+        params.append("category", adminFilterCategoryInput.value);
+    }
+
+    if (adminFilterSizeInput.value !== "") {
+        params.append("size", adminFilterSizeInput.value);
+    }
+
+    if (adminSortByInput.value !== "") {
+        params.append("sortBy", adminSortByInput.value);
+        params.append("sortDirection", adminSortDirectionInput.value);
+    }
+
+    if (params.toString() === "") {
+        return "/products/all";
+    }
+
+    return "/products/search?" + params.toString();
+}
+
 async function loadProducts() {
-    const response = await fetch("/products/all");
+    const response = await fetch(buildAdminSearchUrl());
     const products = await response.json();
 
     productList.innerHTML = "";
@@ -145,6 +184,17 @@ productForm.addEventListener("submit", async (event) => {
 });
 
 loadProductsButton.addEventListener("click", loadProducts);
+adminApplyFiltersButton.addEventListener("click", loadProducts);
+
+adminClearFiltersButton.addEventListener("click", () => {
+    adminSearchTitleInput.value = "";
+    adminSearchManufacturerInput.value = "";
+    adminFilterCategoryInput.value = "";
+    adminFilterSizeInput.value = "";
+    adminSortByInput.value = "";
+    adminSortDirectionInput.value = "asc";
+    loadProducts();
+});
 
 viewCustomersButton.addEventListener("click", () => {
     window.location.href = "/AdminCustomers.html";

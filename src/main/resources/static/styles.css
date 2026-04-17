@@ -278,6 +278,24 @@ h1 {
     padding: 10px 12px;
 }
 
+.adminFilterGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 16px;
+}
+
+.adminFilterButtonRow {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.adminClearButton {
+    width: auto;
+    min-width: 120px;
+}
+
 .section-title {
     margin-top: 12px;
     margin-bottom: 6px;
@@ -671,6 +689,10 @@ h1 {
     }
 
     .productRow {
+        grid-template-columns: 1fr;
+    }
+
+    .adminFilterGrid {
         grid-template-columns: 1fr;
     }
 
