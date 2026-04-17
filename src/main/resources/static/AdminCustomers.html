@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Customers</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main class="adminPageShell">
+        <section class="hero-panel fullWidthPanel">
+            <div class="topBarRow">
+                <div>
+                    <h1>Admin Customer Details</h1>
+                    <p class="hero-copy">
+                        View customer account details and purchase histories.
+                    </p>
+                </div>
+
+                <div class="topButtonRow">
+                    <button class="action-card" type="button" id="admin-customers-back-button">Back To Products</button>
+                    <button class="action-card" type="button" id="admin-customers-logout-button">Log Out</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="adminCustomerLayout">
+            <section class="list-panel adminCustomerPanel">
+                <div class="list-header">
+                    <h2>Customers</h2>
+                </div>
+                <div id="admin-customer-list" class="adminCustomerList"></div>
+            </section>
+
+            <section class="list-panel adminCustomerPanel">
+                <div class="list-header">
+                    <h2>Purchase History</h2>
+                </div>
+                <div id="admin-purchase-history" class="adminPurchaseHistory"></div>
+            </section>
+        </section>
+    </main>
+
+    <script src="AdminCustomers.js"></script>
+</body>
+</html>

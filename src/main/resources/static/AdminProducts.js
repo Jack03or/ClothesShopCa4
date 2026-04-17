@@ -1,6 +1,7 @@
 const productForm = document.getElementById("product-form");
 const productMessageBox = document.getElementById("product-message-box");
 const productList = document.getElementById("product-list");
+const viewCustomersButton = document.getElementById("view-customers-button");
 const loadProductsButton = document.getElementById("load-products-button");
 const backButton = document.getElementById("back-button");
 
@@ -144,6 +145,10 @@ productForm.addEventListener("submit", async (event) => {
 });
 
 loadProductsButton.addEventListener("click", loadProducts);
+
+viewCustomersButton.addEventListener("click", () => {
+    window.location.href = "/AdminCustomers.html";
+});
 
 backButton.addEventListener("click", () => {
     window.location.href = "/";

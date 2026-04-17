@@ -583,6 +583,62 @@ h1 {
     margin-top: 24px;
 }
 
+.adminCustomerLayout {
+    width: min(1200px, calc(100% - 40px));
+    margin: 0 auto 40px;
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 20px;
+}
+
+.adminCustomerPanel {
+    width: 100%;
+    margin: 0;
+}
+
+.adminCustomerList,
+.adminPurchaseHistory {
+    display: grid;
+    gap: 14px;
+}
+
+.adminCustomerCard,
+.adminHistoryCard {
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    padding: 16px;
+    background: #ffffff;
+}
+
+.adminCustomerCard h3,
+.adminHistoryCard h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.adminCustomerCard p,
+.adminHistoryCard p {
+    margin: 6px 0;
+}
+
+.viewHistoryButton {
+    width: 100%;
+}
+
+.adminHistoryItems {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #dddddd;
+    display: grid;
+    gap: 8px;
+}
+
+.adminHistoryItem {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+}
+
 @media (max-width: 860px) {
     .page-shell {
         grid-template-columns: 1fr;
@@ -631,6 +687,10 @@ h1 {
     }
 
     .checkoutLayout {
+        grid-template-columns: 1fr;
+    }
+
+    .adminCustomerLayout {
         grid-template-columns: 1fr;
     }
 
