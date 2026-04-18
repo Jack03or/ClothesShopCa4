@@ -7,8 +7,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.softwarepatterns.Clothes_ShopCa4.model.AccountDetailsRequest;
+import com.softwarepatterns.Clothes_ShopCa4.model.AccountDetailsResponse;
 import com.softwarepatterns.Clothes_ShopCa4.model.LoyaltyCardRequest;
 import com.softwarepatterns.Clothes_ShopCa4.model.User;
 import com.softwarepatterns.Clothes_ShopCa4.service.UserService;
@@ -86,6 +89,11 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    @GetMapping("/details")
+    public AccountDetailsResponse getAccountDetails(@RequestParam String username) {
+        return userService.getAccountDetails(username);
+    }
+
     @PutMapping("/loyalty")
     public String updateLoyaltyCard(@RequestBody LoyaltyCardRequest request) {
         if (request.getUsername() == null || request.getUsername().isBlank()) {
@@ -93,5 +101,14 @@ public class UserController {
         }
 
         return userService.updateLoyaltyCard(request.getUsername(), request.isHasLoyaltyCard());
+    }
+
+    @PutMapping("/details")
+    public String updateAccountDetails(@RequestBody AccountDetailsRequest request) {
+        if (request.getUsername() == null || request.getUsername().isBlank()) {
+            return "Username is required.";
+        }
+
+        return userService.updateAccountDetails(request);
     }
 }

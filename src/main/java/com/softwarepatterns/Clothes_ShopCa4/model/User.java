@@ -30,6 +30,21 @@ public class User {
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private boolean hasLoyaltyCard;
 
+    @Column
+    private String shippingAddress;
+
+    @Column
+    private String city;
+
+    @Column
+    private String country;
+
+    @Column
+    private String paymentMethod;
+
+    @Column
+    private String cardHolderName;
+
     public User() {
 
     }
@@ -40,6 +55,11 @@ public class User {
         this.password = password;
         this.role = role;
         this.hasLoyaltyCard = false;
+        this.shippingAddress = "";
+        this.city = "";
+        this.country = "";
+        this.paymentMethod = "";
+        this.cardHolderName = "";
     }
 
     public Long getId() {
@@ -88,5 +108,45 @@ public class User {
 
     public void setHasLoyaltyCard(boolean hasLoyaltyCard) {
         this.hasLoyaltyCard = hasLoyaltyCard;
+    }
+
+    public String getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(String shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public String getCardHolderName() {
+        return cardHolderName;
+    }
+
+    public void setCardHolderName(String cardHolderName) {
+        this.cardHolderName = cardHolderName;
     }
 }
