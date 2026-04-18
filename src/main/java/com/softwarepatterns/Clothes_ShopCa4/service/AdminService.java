@@ -59,7 +59,6 @@ public class AdminService {
             orderResponse.setSubtotalPrice(order.getSubtotalPrice());
             orderResponse.setDiscountAmount(order.getDiscountAmount());
             orderResponse.setTotalPrice(order.getTotalPrice());
-            orderResponse.setStatus(order.getStatus());
             orderResponse.setCreatedAt(order.getCreatedAt());
 
             List<AdminOrderItemResponse> itemResponses = new ArrayList<AdminOrderItemResponse>();

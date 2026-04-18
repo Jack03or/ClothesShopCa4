@@ -11,7 +11,6 @@ public class AdminOrderResponse {
     private BigDecimal subtotalPrice;
     private BigDecimal discountAmount;
     private BigDecimal totalPrice;
-    private String status;
     private LocalDateTime createdAt;
     private List<AdminOrderItemResponse> items = new ArrayList<AdminOrderItemResponse>();
 
@@ -49,14 +48,6 @@ public class AdminOrderResponse {
 
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public LocalDateTime getCreatedAt() {

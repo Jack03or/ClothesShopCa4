@@ -49,7 +49,6 @@ public class CheckoutFacade {
 
         Order order = new Order();
         order.setUser(cart.getUser());
-        order.setStatus("PENDING");
         order.setCreatedAt(LocalDateTime.now());
 
         for (CartItem cartItem : cart.getItems()) {

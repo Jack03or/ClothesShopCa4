@@ -56,7 +56,6 @@ async function loadPurchaseHistory(username) {
         orderCard.innerHTML = `
             <h3>Order #${order.id}</h3>
             <p><strong>Date:</strong> ${order.createdAt}</p>
-            <p><strong>Status:</strong> ${order.status}</p>
             <p><strong>Subtotal:</strong> ${formatAdminPrice(order.subtotalPrice)}</p>
             <p><strong>Discount:</strong> ${formatAdminPrice(order.discountAmount)}</p>
             <p><strong>Total:</strong> ${formatAdminPrice(order.totalPrice)}</p>
