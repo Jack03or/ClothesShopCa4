@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main class="adminPageShell">
+        <section class="hero-panel fullWidthPanel">
+            <div class="topBarRow">
+                <div>
+                    <h1>My Account Details</h1>
+                    <p class="hero-copy">
+                        Save your shipping and payment details for faster checkout.
+                    </p>
+                </div>
+
+                <div class="topButtonRow">
+                    <button class="action-card" type="button" id="account-back-button">Back To Products</button>
+                    <button class="action-card" type="button" id="account-logout-button">Log Out</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="form-panel accountPanel">
+            <div class="panel-header">
+                <h2>Shipping And Payment Details</h2>
+            </div>
+
+            <form id="account-form" class="auth-form">
+                <label for="account-username">Username</label>
+                <input id="account-username" type="text" disabled>
+
+                <label for="account-email">Email</label>
+                <input id="account-email" type="email" disabled>
+
+                <label for="account-address">Shipping Address</label>
+                <input id="account-address" type="text">
+
+                <label for="account-city">City</label>
+                <input id="account-city" type="text">
+
+                <label for="account-country">Country</label>
+                <input id="account-country" type="text">
+
+                <label for="account-payment-method">Payment Method</label>
+                <input id="account-payment-method" type="text" placeholder="Visa, Mastercard, Revolut">
+
+                <label for="account-card-holder">Card Holder Name</label>
+                <input id="account-card-holder" type="text">
+
+                <button class="submit-button" type="submit">Save Account Details</button>
+            </form>
+
+            <div id="account-message-box" class="message-box hidden"></div>
+        </section>
+    </main>
+
+    <script src="CustomerAccount.js"></script>
+</body>
+</html>

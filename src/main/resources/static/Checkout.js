@@ -38,6 +38,28 @@ function showCheckoutMessage(message, isError) {
     checkoutMessage.classList.toggle("error", isError);
 }
 
+async function loadSavedAccountDetails() {
+    const checkoutUsername = getCheckoutUsername();
+
+    if (!checkoutUsername) {
+        return;
+    }
+
+    const response = await fetch("/users/details?username=" + encodeURIComponent(checkoutUsername));
+    const details = await response.json();
+
+    if (!details) {
+        return;
+    }
+
+    document.getElementById("full-name").value = details.cardHolderName || "";
+    document.getElementById("address-line").value = details.shippingAddress || "";
+    document.getElementById("city").value = details.city || "";
+    document.getElementById("country").value = details.country || "";
+    document.getElementById("card-name").value = details.cardHolderName || "";
+    document.getElementById("card-number").value = "";
+}
+
 async function loadCheckoutSummary() {
     const checkoutUsername = getCheckoutUsername();
 
@@ -110,5 +132,6 @@ checkoutLogoutButton.addEventListener("click", () => {
 });
 
 if (requireCheckoutLogin()) {
+    loadSavedAccountDetails();
     loadCheckoutSummary();
 }

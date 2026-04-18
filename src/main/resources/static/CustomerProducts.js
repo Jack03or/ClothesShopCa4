@@ -1,5 +1,6 @@
 const customerProductList = document.getElementById("customer-product-list");
 const customerLogoutButton = document.getElementById("customer-logout-button");
+const viewAccountButton = document.getElementById("view-account-button");
 const viewCartButton = document.getElementById("view-cart-button");
 const applyFiltersButton = document.getElementById("apply-filters-button");
 const clearFiltersButton = document.getElementById("clear-filters-button");
@@ -352,6 +353,10 @@ function clearFilters() {
 
 customerLogoutButton.addEventListener("click", () => {
     logoutUser();
+});
+
+viewAccountButton.addEventListener("click", () => {
+    window.location.href = "/CustomerAccount.html";
 });
 
 viewCartButton.addEventListener("click", () => {
