@@ -20,6 +20,7 @@ import com.softwarepatterns.Clothes_ShopCa4.service.UserService;
 @RequestMapping("/users")
 public class UserController {
 
+    private static final String ADMIN_REGISTRATION_CODE = "Admin2026";
     private UserService userService;
 
     public UserController(UserService userService) {
@@ -58,6 +59,18 @@ public class UserController {
         }
 
         user.setRole(user.getRole().toUpperCase());
+
+        if ("ADMIN".equals(user.getRole())) {
+            if (user.getAdminCode() == null || user.getAdminCode().isBlank()) {
+                return "Admin code is required for administrator registration.";
+            }
+
+            if (!ADMIN_REGISTRATION_CODE.equals(user.getAdminCode())) {
+                return "Invalid admin code.";
+            }
+
+            user.setHasLoyaltyCard(false);
+        }
 
         userService.saveUser(user);
         return "User " + user.getUsername() + " registered successfully!";

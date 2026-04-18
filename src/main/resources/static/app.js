@@ -1,6 +1,10 @@
 const panelTitle = document.getElementById("panel-title");
 const panelSubtitle = document.getElementById("panel-subtitle");
 const messageBox = document.getElementById("message-box");
+const registerAdminAccountInput = document.getElementById("register-admin-account");
+const registerAdminCodeInput = document.getElementById("register-admin-code");
+const registerLoyaltyCardInput = document.getElementById("register-loyalty-card");
+const adminCodeField = document.getElementById("admin-code-field");
 
 const forms = {
     register: document.getElementById("register-form"),
@@ -49,6 +53,20 @@ function saveLoggedInUser(username, role) {
     sessionStorage.setItem("loggedInRole", role);
 }
 
+function updateAdminRegistrationView() {
+    if (registerAdminAccountInput.checked) {
+        adminCodeField.classList.remove("hidden");
+        registerAdminCodeInput.required = true;
+        registerLoyaltyCardInput.checked = false;
+        registerLoyaltyCardInput.disabled = true;
+    } else {
+        adminCodeField.classList.add("hidden");
+        registerAdminCodeInput.required = false;
+        registerAdminCodeInput.value = "";
+        registerLoyaltyCardInput.disabled = false;
+    }
+}
+
 async function sendRequest(url, bodyData) {
     const response = await fetch(url, {
         method: "POST",
@@ -67,6 +85,8 @@ document.querySelectorAll(".action-card").forEach((button) => {
     });
 });
 
+registerAdminAccountInput.addEventListener("change", updateAdminRegistrationView);
+
 forms.register.addEventListener("submit", async (event) => {
     event.preventDefault();
 
@@ -74,16 +94,20 @@ forms.register.addEventListener("submit", async (event) => {
         username: document.getElementById("register-username").value,
         email: document.getElementById("register-email").value,
         password: document.getElementById("register-password").value,
-        role: "CUSTOMER",
-        hasLoyaltyCard: document.getElementById("register-loyalty-card").checked
+        role: registerAdminAccountInput.checked ? "ADMIN" : "CUSTOMER",
+        hasLoyaltyCard: registerAdminAccountInput.checked ? false : registerLoyaltyCardInput.checked,
+        adminCode: registerAdminCodeInput.value
     };
 
     const result = await sendRequest("/users/register", bodyData);
     showMessage(result, !result.toLowerCase().includes("successfully"));
     if (result.toLowerCase().includes("successfully")) {
         forms.register.reset();
+        updateAdminRegistrationView();
     }
 });
+
+updateAdminRegistrationView();
 
 forms["customer-login"].addEventListener("submit", async (event) => {
     event.preventDefault();
