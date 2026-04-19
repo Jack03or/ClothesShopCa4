@@ -128,7 +128,7 @@ async function loadProducts() {
             <span>${product.manufacturer}</span>
             <span>${product.category}</span>
             <span>EUR${product.price}</span>
-            <span>${product.imageUrl}</span>
+            <span><img src="${product.imageUrl}" alt="${product.title}" class="adminProductThumbnail"></span>
             <span>${buildVariantText(product.variants)}</span>
             <div class="stockActionBox">
                 <select class="stockVariantSelect">${buildVariantOptions(product.variants)}</select>

@@ -278,6 +278,16 @@ h1 {
     padding: 10px 12px;
 }
 
+.adminProductThumbnail {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid #cccccc;
+    background: #ffffff;
+    display: block;
+}
+
 .adminFilterGrid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -326,6 +336,13 @@ h1 {
     font-size: 1.1rem;
     padding: 16px;
     text-align: center;
+}
+
+.customerProductImage img {
+    max-width: 100%;
+    max-height: 180px;
+    object-fit: contain;
+    display: block;
 }
 
 .customerProductBody {

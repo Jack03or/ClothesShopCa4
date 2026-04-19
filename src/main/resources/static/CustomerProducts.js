@@ -241,7 +241,9 @@ async function loadCustomerProducts() {
         });
 
         card.innerHTML = `
-            <div class="customerProductImage">${product.imageUrl}</div>
+            <div class="customerProductImage">
+                <img src="${product.imageUrl}" alt="${product.title}">
+            </div>
             <div class="customerProductBody">
                 <h3>${product.title}</h3>
                 <p><strong>Manufacturer:</strong> ${product.manufacturer}</p>
